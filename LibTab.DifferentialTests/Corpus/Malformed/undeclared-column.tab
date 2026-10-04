@@ -1,0 +1,6 @@
+schema=test
+	col=k
+
+k=row
+	v=one
+

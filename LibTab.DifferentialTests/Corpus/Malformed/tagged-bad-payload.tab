@@ -1,0 +1,7 @@
+schema=test
+	col=k
+	col=digest type=HASHED
+
+k=row
+	digest=hashed:@@@@
+

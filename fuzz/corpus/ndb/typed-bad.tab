@@ -1,0 +1,7 @@
+schema=accounts
+	col=name
+	col=password type=HASHED
+
+name=scott
+	password=plain
+

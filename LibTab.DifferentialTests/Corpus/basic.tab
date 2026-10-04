@@ -1,0 +1,10 @@
+schema=test
+	col=k
+	col=v
+
+k=alpha
+	v=one
+
+k=beta
+	v=two
+

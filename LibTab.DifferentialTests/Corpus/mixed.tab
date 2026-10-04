@@ -1,0 +1,32 @@
+schema=test
+	col=k
+	col=v
+	col=digest type=HASHED
+	col=proof type=SIGNED signer=pinned
+
+k=plain
+	v="Divine Comedy"
+	digest=hashed:Aa5Kr7PH2GFrc58Fow0GtOIjb96nEhaBWfNG6KPv1X2e
+	proof=signed:dmVjdG9y:6DAJ-oiAwa83CpAiN5b4cSZpfq2RdmGcn3ote8zVCw_BZ7syog4QYdgN1xmz-HBHDGpFLRvJZQXtd14YhbciAA==
+
+k=quote
+	v="The Number &quot;e&quot;"
+
+k=newline
+	v="line one&#10;line two"
+
+k=literal-nil
+	v=n&#105;l
+
+k=amp
+	v=AT&amp;T
+
+k=hash
+	v="#not-a-comment"
+
+k=prefix
+	v=__libtab_text64_v1&#58;not-user-visible
+
+k=empty
+	v=
+

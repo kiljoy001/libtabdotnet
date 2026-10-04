@@ -1,0 +1,15 @@
+schema=test
+	col=k
+	col=v
+	col=w
+
+k=space
+	v="Divine Comedy"
+	w=n&#105;l
+
+k=quote
+	v="The Number &quot;e&quot;"
+	w="line one&#10;line two"
+
+k=clear
+

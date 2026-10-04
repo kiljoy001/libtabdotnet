@@ -1,0 +1,7 @@
+schema=weapons
+	col=name
+	col=cost
+
+name=autocannon
+	cost=1
+

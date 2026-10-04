@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>LibTab</RootNamespace>
+    <AssemblyName>LibTab</AssemblyName>
+    <PackageId>LibTab</PackageId>
+    <Title>LibTab for .NET</Title>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Authors>Scott J Guyton</Authors>
+    <Company>Scott J Guyton</Company>
+    <Description>Pure C# libtab reader/writer for Plan 9 ndb-shaped tables with compatible HASHED, SIGNED, and ENCRYPTED cells.</Description>
+    <Copyright>Copyright (c) 2026 Scott J Guyton</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kiljoy001/libtabdotnet</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial pure C# libtab port with ndb-shaped read/write support, HASHED, SIGNED, and ENCRYPTED typed cells, TabMaxCell write guards, and C interop verification.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>libtab;plan9;9front;plan9port;ndb;database;table;cryptography;blake2b;argon2id;eddsa;xchacha20;poly1305</PackageTags>
+    <PackageType>Dependency</PackageType>
+    <Product>LibTab</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/kiljoy001/libtabdotnet</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\CHANGELOG.md" Pack="true" PackagePath="" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\README.md" Pack="true" PackagePath="" />
+    <None Include="..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+{
+  "stryker-config": {
+    "project": "LibTab/LibTab.csproj",
+    "test-projects": [
+      "LibTab.Tests/LibTab.Tests.csproj",
+      "LibTab.PropertyTests/LibTab.PropertyTests.csproj",
+      "LibTab.Specs/LibTab.Specs.csproj",
+      "LibTab.DifferentialTests/LibTab.DifferentialTests.csproj"
+    ],
+    "reporters": [
+      "progress",
+      "html",
+      "json",
+      "cleartext"
+    ],
+    "mutation-level": "Complete",
+    "thresholds": {
+      "high": 70,
+      "low": 70,
+      "break": 70
+    },
+    "concurrency": 4,
+    "mutate": [
+      "**/*.cs",
+      "!Properties/AssemblyInfo.cs"
+    ]
+  }
+}

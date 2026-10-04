@@ -1,0 +1,40 @@
+schema=test
+	col=k
+	col=v
+
+k=text-00
+	v="Divine Comedy"
+
+k=text-01
+	v="The Number &quot;e&quot;"
+
+k=text-02
+	v="line one&#10;line two"
+
+k=text-03
+	v="left	right"
+
+k=text-04
+	v=n&#105;l
+
+k=text-05
+	v=AT&amp;T
+
+k=text-06
+	v="#not-a-comment"
+
+k=text-07
+	v=__libtab_text64_v1&#58;not-user-visible
+
+k=text-08
+	v=
+
+k=text-09
+	v=café
+
+k=text-10
+	v=plain-token
+
+k=text-11
+	v=semi;colon
+

@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version, with or without a leading v
+        required: true
+        type: string
+      publish_nuget:
+        description: Publish the package to NuGet.org
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+
+jobs:
+  package:
+    name: Verify and package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      artifact: ${{ steps.version.outputs.artifact }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Resolve package version
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          requested="${RELEASE_TAG:-$INPUT_VERSION}"
+          version="${requested#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?(\+[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$ ]]; then
+            echo "Invalid semantic version: $requested" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "artifact=nuget-$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build, test and fuzz smoke
+        run: bash scripts/test.sh
+
+      - name: Pack NuGet package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          dotnet pack LibTab/LibTab.csproj -c Release -p:Version="$VERSION" -o artifacts/packages
+          shopt -s nullglob
+          packages=(artifacts/packages/*.nupkg)
+          symbols=(artifacts/packages/*.snupkg)
+          if [[ ${#packages[@]} -ne 1 || ${#symbols[@]} -ne 1 ]]; then
+            printf 'Expected one package and one symbol package; found %d and %d.\n' \
+              "${#packages[@]}" "${#symbols[@]}" >&2
+            exit 1
+          fi
+
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.version.outputs.artifact }}
+          path: artifacts/packages/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish:
+    name: Publish release
+    needs: package
+    if: github.event_name == 'release' || inputs.publish_nuget == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: nuget
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Download NuGet artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.package.outputs.artifact }}
+          path: artifacts/packages
+
+      - name: Request temporary NuGet API key
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: kiljoy001
+
+      - name: Publish package to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          for package in artifacts/packages/*.nupkg; do
+            dotnet nuget push "$package" \
+              --api-key "$NUGET_API_KEY" \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
+          done
+
+      - name: Attach package to GitHub Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" artifacts/packages/* --repo "$GH_REPO" --clobber

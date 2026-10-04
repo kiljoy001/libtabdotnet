@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="LibTab.Tests/LibTab.Tests.csproj" />
+  <Project Path="LibTab.PropertyTests/LibTab.PropertyTests.csproj" />
+  <Project Path="LibTab.Specs/LibTab.Specs.csproj" />
+  <Project Path="LibTab.Fuzz/LibTab.Fuzz.csproj" />
+  <Project Path="LibTab.DifferentialTests/LibTab.DifferentialTests.csproj" />
+  <Project Path="LibTab/LibTab.csproj" />
+</Solution>
