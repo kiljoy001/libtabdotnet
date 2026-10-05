@@ -136,5 +136,9 @@ scripts/test.sh
 scripts/full-gates.sh
 ```
 
-The full gate requires the C libtab repository and plan9port tools. Set
-`LIBTAB_C_REPO` if the C repository is not at `/home/scott/Repo/libtab`.
+The full gate requires plan9port tools and a checkout of the C libtab library,
+named by `LIBTAB_C_REPO`:
+
+```sh
+LIBTAB_C_REPO=/path/to/libtab scripts/full-gates.sh
+```

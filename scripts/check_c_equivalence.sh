@@ -2,7 +2,11 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-libtab_c_repo="${LIBTAB_C_REPO:-/home/scott/Repo/libtab}"
+if [[ -z "${LIBTAB_C_REPO:-}" ]]; then
+  echo "set LIBTAB_C_REPO to a checkout of the C libtab library" >&2
+  exit 1
+fi
+libtab_c_repo="$LIBTAB_C_REPO"
 tmp="${TMPDIR:-/tmp}/libtab-equivalence.$$"
 
 mkdir -p "$tmp/cs"
